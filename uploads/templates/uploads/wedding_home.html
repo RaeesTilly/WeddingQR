@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {{ wedding.bride_name }} & {{ wedding.groom_name }}
+        - Wedding
+    </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            background: #faf7f2;
+            color: #3b3028;
+        }
+
+
+        /* PAGE */
+
+        .page {
+            min-height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 30px 20px;
+        }
+
+
+        /* MAIN CARD */
+
+        .card {
+            width: 100%;
+            max-width: 700px;
+
+            background: white;
+
+            padding: 60px 35px;
+
+            border-radius: 18px;
+
+            text-align: center;
+
+            box-shadow:
+                0 15px 50px
+                rgba(59, 48, 40, 0.10);
+        }
+
+
+        /* INITIALS */
+
+        .initials {
+            font-size: 18px;
+
+            letter-spacing: 7px;
+
+            margin-bottom: 25px;
+
+            opacity: 0.8;
+        }
+
+
+        /* WEDDING TITLE */
+
+        h1 {
+            margin: 0;
+
+            font-size: 52px;
+
+            font-weight: normal;
+
+            line-height: 1.2;
+        }
+
+
+        .heart {
+            display: block;
+
+            font-size: 28px;
+
+            margin: 18px 0;
+        }
+
+
+        /* MESSAGE */
+
+        .message {
+            font-size: 19px;
+
+            line-height: 1.7;
+
+            margin: 0 auto;
+
+            max-width: 520px;
+        }
+
+
+        /* DIVIDER */
+
+        .divider {
+            width: 80px;
+
+            height: 1px;
+
+            background: #b9a28f;
+
+            margin: 30px auto;
+        }
+
+
+        /* WEDDING DETAILS */
+
+        .details {
+            margin-top: 25px;
+
+            font-size: 17px;
+
+            line-height: 1.8;
+        }
+
+
+        .detail {
+            margin: 12px 0;
+        }
+
+
+        .detail-icon {
+            margin-right: 6px;
+        }
+
+
+        /* ACTION BUTTONS */
+
+        .actions {
+            margin-top: 40px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 13px;
+
+            max-width: 420px;
+
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+
+        .button {
+            display: block;
+
+            width: 100%;
+
+            padding: 16px 20px;
+
+            border-radius: 8px;
+
+            text-decoration: none;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 15px;
+
+            transition: 0.2s ease;
+        }
+
+
+        .button:hover {
+            transform: translateY(-1px);
+
+            opacity: 0.92;
+        }
+
+
+        .primary {
+            background: #3b3028;
+
+            color: white;
+        }
+
+
+        .secondary {
+            border: 1px solid #3b3028;
+
+            color: #3b3028;
+
+            background: white;
+        }
+
+
+        .qr-button {
+            background: #8d7563;
+
+            color: white;
+        }
+
+
+        /* FOOTER */
+
+        .footer {
+            margin-top: 40px;
+
+            font-size: 14px;
+
+            opacity: 0.65;
+
+            line-height: 1.6;
+        }
+
+
+        /* MOBILE */
+
+        @media (max-width: 600px) {
+
+            .page {
+                padding: 15px;
+            }
+
+
+            .card {
+                padding: 45px 22px;
+            }
+
+
+            h1 {
+                font-size: 38px;
+            }
+
+
+            .message {
+                font-size: 17px;
+            }
+
+
+            .details {
+                font-size: 16px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="page">
+
+
+    <main class="card">
+
+
+        <!-- INITIALS -->
+
+        <div class="initials">
+
+            {{ wedding.bride_name|first|upper }}
+
+            &
+
+            {{ wedding.groom_name|first|upper }}
+
+        </div>
+
+
+        <!-- NAMES -->
+
+        <h1>
+
+            {{ wedding.bride_name }}
+
+            <span class="heart">
+                ❤️
+            </span>
+
+            {{ wedding.groom_name }}
+
+        </h1>
+
+
+        <!-- MESSAGE -->
+
+        <p class="message">
+
+            We're getting married!
+
+            <br>
+
+            Every laugh, smile and candid moment helps tells the story of our day.
+            Please upload your photos and videos below so we can relive these beautiful memories for years to come.
+
+        </p>
+
+
+        <div class="divider"></div>
+
+
+        <!-- WEDDING DETAILS -->
+
+        <div class="details">
+
+
+            <div class="detail">
+
+                <span class="detail-icon">
+                    📅
+                </span>
+
+                <strong>
+                    {{ wedding.wedding_date|date:"F j, Y" }}
+                </strong>
+
+            </div>
+
+
+            <div class="detail">
+
+                <span class="detail-icon">
+                    📍
+                </span>
+
+                {{ wedding.venue }}
+
+            </div>
+
+
+        </div>
+
+
+        <!-- ACTIONS -->
+
+        <div class="actions">
+
+
+            <!-- UPLOAD -->
+
+            <a
+                href="/api/weddings/{{ wedding.slug }}/upload/"
+                class="button primary"
+            >
+
+                📸 Share Your Photos & Videos
+
+            </a>
+
+
+            <!-- GALLERY -->
+
+            <a
+                href="/api/weddings/{{ wedding.slug }}/gallery/"
+                class="button secondary"
+            >
+
+                🖼️ View Wedding Memories
+
+            </a>
+
+
+            <!-- QR CARD -->
+
+            <a
+                href="/api/weddings/{{ wedding.slug }}/qr-card/"
+                class="button qr-button"
+            >
+
+                🔳 View Wedding QR Code
+
+            </a>
+
+
+        </div>
+
+
+        <!-- FOOTER -->
+
+        <div class="footer">
+
+            Thank you for being part of
+            our special day. ❤️
+
+            <br>
+
+            Your memories mean the world to us.
+
+        </div>
+
+
+    </main>
+
+
+</div>
+
+
+</body>
+
+</html>

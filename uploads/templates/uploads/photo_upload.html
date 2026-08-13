@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Share a Memory - {{ wedding.bride_name }} & {{ wedding.groom_name }}
+    </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Georgia, "Times New Roman", serif;
+            background: #faf7f2;
+            color: #3b3028;
+        }
+
+        .page {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 520px;
+            background: white;
+            padding: 35px 25px;
+            border-radius: 14px;
+            box-shadow: 0 10px 35px rgba(59, 48, 40, 0.08);
+            text-align: center;
+        }
+
+        .initials {
+            font-size: 18px;
+            letter-spacing: 5px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 34px;
+            font-weight: normal;
+        }
+
+        .subtitle {
+            margin-top: 10px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .divider {
+            width: 70px;
+            height: 1px;
+            background: #b9a28f;
+            margin: 25px auto;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #d8cec5;
+            border-radius: 7px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        input[type="text"]:focus {
+            border-color: #8d7563;
+        }
+
+        /* MEMORY TYPE */
+
+        .memory-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .memory-option {
+            flex: 1;
+            padding: 13px 10px;
+            border: 1px solid #d8cec5;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 15px;
+        }
+
+        .memory-option:hover {
+            background: #faf7f2;
+        }
+
+        .memory-option.active {
+            border-color: #3b3028;
+            background: #faf7f2;
+        }
+
+        .memory-option input {
+            display: none;
+        }
+
+        .file-label {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            border: 1px dashed #b9a28f;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.2s;
+        }
+
+        .file-label:hover {
+            background: #faf7f2;
+        }
+
+        #imageInput,
+        #videoInput {
+            display: none;
+        }
+
+        .file-text {
+            font-size: 16px;
+        }
+
+        .upload-info {
+            margin-top: 8px;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            opacity: 0.65;
+            text-align: center;
+        }
+
+        /* PREVIEW */
+
+        .preview-container {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .preview-container img,
+        .preview-container video {
+            width: 100%;
+            max-height: 350px;
+            object-fit: cover;
+            border-radius: 10px;
+            background: #000;
+        }
+
+        .preview-name {
+            margin-top: 10px;
+            font-size: 14px;
+            opacity: 0.7;
+            word-break: break-word;
+        }
+
+        /* BUTTON */
+
+        .upload-button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 16px;
+            border: none;
+            border-radius: 7px;
+            background: #3b3028;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+        }
+
+        .upload-button:hover {
+            opacity: 0.9;
+        }
+
+        .upload-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 22px;
+            color: #3b3028;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        /* SUCCESS */
+
+        .success {
+            display: none;
+        }
+
+        .success-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+
+        .success h2 {
+            font-size: 30px;
+            font-weight: normal;
+            margin-bottom: 10px;
+        }
+
+        .success p {
+            line-height: 1.6;
+        }
+
+        .success-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .success-button {
+            display: block;
+            padding: 14px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-family: Arial, sans-serif;
+        }
+
+        .gallery-button {
+            background: #3b3028;
+            color: white;
+        }
+
+        .home-button {
+            border: 1px solid #3b3028;
+            color: #3b3028;
+        }
+
+        /* ERROR */
+
+        .error {
+            display: none;
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 7px;
+            background: #f8e8e8;
+            color: #8a3030;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+
+        @media (max-width: 500px) {
+
+            .page {
+                padding: 15px;
+            }
+
+            .card {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 29px;
+            }
+
+            .memory-option {
+                font-size: 14px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="page">
+
+    <div class="card">
+
+
+        <!-- UPLOAD SECTION -->
+
+        <div id="uploadSection">
+
+            <div class="initials">
+                T & M
+            </div>
+
+            <h1>
+                Share a Memory ❤️
+            </h1>
+
+            <p class="subtitle">
+
+                Help {{ wedding.bride_name }}
+                and {{ wedding.groom_name }}
+                capture the special moments
+                from their wedding.
+
+            </p>
+
+
+            <div class="divider"></div>
+
+
+            <form
+                id="uploadForm"
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                {% csrf_token %}
+
+
+                <!-- GUEST NAME -->
+
+                <div class="form-group">
+
+                    <label for="guestName">
+                        Your Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="guestName"
+                        name="guest_name"
+                        placeholder="Enter your name"
+                        maxlength="100"
+                    >
+
+                </div>
+
+
+                <!-- MEMORY TYPE -->
+
+                <div class="form-group">
+
+                    <label>
+                        What would you like to share?
+                    </label>
+
+                    <div class="memory-options">
+
+                        <label
+                            class="memory-option active"
+                            id="photoOption"
+                        >
+
+                            <input
+                                type="radio"
+                                name="memory_type"
+                                value="photo"
+                                checked
+                            >
+
+                            📸 Photo
+
+                        </label>
+
+
+                        <label
+                            class="memory-option"
+                            id="videoOption"
+                        >
+
+                            <input
+                                type="radio"
+                                name="memory_type"
+                                value="video"
+                            >
+
+                            🎥 Video
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- PHOTO -->
+
+                    <div id="photoUpload">
+
+                        <label
+                            for="imageInput"
+                            class="file-label"
+                        >
+
+                            <span class="file-text">
+                                📸 Tap to choose a photo
+                            </span>
+
+                        </label>
+
+                        <input
+                            type="file"
+                            id="imageInput"
+                            name="image"
+                            accept="image/*"
+                        >
+
+                        <div class="upload-info">
+                            Maximum photo size: 20 MB
+                        </div>
+
+                    </div>
+
+
+                    <!-- VIDEO -->
+
+                    <div
+                        id="videoUpload"
+                        style="display: none;"
+                    >
+
+                        <label
+                            for="videoInput"
+                            class="file-label"
+                        >
+
+                            <span class="file-text">
+                                🎥 Tap to choose a video
+                            </span>
+
+                        </label>
+
+                        <input
+                            type="file"
+                            id="videoInput"
+                            name="video"
+                            accept="video/mp4,video/quicktime,video/webm"
+                        >
+
+                        <div class="upload-info">
+                            Maximum video size: 100 MB
+                        </div>
+
+                    </div>
+
+
+                    <!-- PHOTO PREVIEW -->
+
+                    <div
+                        id="imagePreviewContainer"
+                        class="preview-container"
+                    >
+
+                        <img
+                            id="imagePreview"
+                            alt="Selected photo preview"
+                        >
+
+                        <div
+                            id="imagePreviewName"
+                            class="preview-name"
+                        ></div>
+
+                    </div>
+
+
+                    <!-- VIDEO PREVIEW -->
+
+                    <div
+                        id="videoPreviewContainer"
+                        class="preview-container"
+                    >
+
+                        <video
+                            id="videoPreview"
+                            controls
+                            playsinline
+                        ></video>
+
+                        <div
+                            id="videoPreviewName"
+                            class="preview-name"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- UPLOAD BUTTON -->
+
+                <button
+                    type="submit"
+                    id="uploadButton"
+                    class="upload-button"
+                >
+
+                    ❤️ Upload My Photo
+
+                </button>
+
+
+                <div
+                    id="errorMessage"
+                    class="error"
+                ></div>
+
+
+            </form>
+
+
+            <a
+                class="back-link"
+                href="/wedding/{{ wedding.slug }}/"
+            >
+                ← Back to Wedding
+            </a>
+
+        </div>
+
+
+        <!-- SUCCESS SECTION -->
+
+        <div
+            id="successSection"
+            class="success"
+        >
+
+            <div class="success-icon">
+                🎉
+            </div>
+
+
+            <h2>
+                Congratulations!
+            </h2>
+
+
+            <p>
+
+                Your memory has been successfully
+                added to {{ wedding.bride_name }}
+                & {{ wedding.groom_name }}'s
+                wedding memories.
+
+                ❤️
+
+            </p>
+
+
+            <div class="success-buttons">
+
+                <a
+                    class="success-button gallery-button"
+                    href="/api/weddings/{{ wedding.slug }}/gallery/"
+                >
+                    🖼️ View Wedding Gallery
+                </a>
+
+
+                <a
+                    class="success-button home-button"
+                    href="/wedding/{{ wedding.slug }}/"
+                >
+                    ← Back to Wedding
+                </a>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /*
+        ELEMENTS
+    */
+
+    const photoOption =
+        document.getElementById("photoOption");
+
+    const videoOption =
+        document.getElementById("videoOption");
+
+    const photoUpload =
+        document.getElementById("photoUpload");
+
+    const videoUpload =
+        document.getElementById("videoUpload");
+
+    const imageInput =
+        document.getElementById("imageInput");
+
+    const videoInput =
+        document.getElementById("videoInput");
+
+    const imagePreview =
+        document.getElementById("imagePreview");
+
+    const videoPreview =
+        document.getElementById("videoPreview");
+
+    const imagePreviewContainer =
+        document.getElementById("imagePreviewContainer");
+
+    const videoPreviewContainer =
+        document.getElementById("videoPreviewContainer");
+
+    const imagePreviewName =
+        document.getElementById("imagePreviewName");
+
+    const videoPreviewName =
+        document.getElementById("videoPreviewName");
+
+    const uploadForm =
+        document.getElementById("uploadForm");
+
+    const uploadButton =
+        document.getElementById("uploadButton");
+
+    const errorMessage =
+        document.getElementById("errorMessage");
+
+    const uploadSection =
+        document.getElementById("uploadSection");
+
+    const successSection =
+        document.getElementById("successSection");
+
+
+    /*
+        MEMORY TYPE SWITCHING
+    */
+
+    photoOption.addEventListener(
+        "click",
+        function () {
+
+            photoOption.classList.add("active");
+
+            videoOption.classList.remove("active");
+
+            photoUpload.style.display = "block";
+
+            videoUpload.style.display = "none";
+
+            imageInput.value = "";
+
+            videoInput.value = "";
+
+            imagePreviewContainer.style.display = "none";
+
+            videoPreviewContainer.style.display = "none";
+
+            uploadButton.textContent =
+                "❤️ Upload My Photo";
+
+            errorMessage.style.display = "none";
+
+        }
+    );
+
+
+    videoOption.addEventListener(
+        "click",
+        function () {
+
+            videoOption.classList.add("active");
+
+            photoOption.classList.remove("active");
+
+            photoUpload.style.display = "none";
+
+            videoUpload.style.display = "block";
+
+            imageInput.value = "";
+
+            videoInput.value = "";
+
+            imagePreviewContainer.style.display = "none";
+
+            videoPreviewContainer.style.display = "none";
+
+            uploadButton.textContent =
+                "🎥 Upload My Video";
+
+            errorMessage.style.display = "none";
+
+        }
+    );
+
+
+    /*
+        PHOTO PREVIEW
+    */
+
+    imageInput.addEventListener(
+        "change",
+        function () {
+
+            const file = this.files[0];
+
+            if (!file) {
+
+                imagePreviewContainer.style.display =
+                    "none";
+
+                return;
+
+            }
+
+
+            if (!file.type.startsWith("image/")) {
+
+                errorMessage.textContent =
+                    "Please choose an image file.";
+
+                errorMessage.style.display =
+                    "block";
+
+                this.value = "";
+
+                return;
+
+            }
+
+
+            if (file.size > 20 * 1024 * 1024) {
+
+                errorMessage.textContent =
+                    "Photo must be smaller than 20 MB.";
+
+                errorMessage.style.display =
+                    "block";
+
+                this.value = "";
+
+                return;
+
+            }
+
+
+            errorMessage.style.display =
+                "none";
+
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload =
+                function (event) {
+
+                    imagePreview.src =
+                        event.target.result;
+
+                    imagePreviewName.textContent =
+                        file.name;
+
+                    imagePreviewContainer.style.display =
+                        "block";
+
+                };
+
+
+            reader.readAsDataURL(file);
+
+        }
+    );
+
+
+    /*
+        VIDEO PREVIEW
+    */
+
+    videoInput.addEventListener(
+        "change",
+        function () {
+
+            const file = this.files[0];
+
+            if (!file) {
+
+                videoPreviewContainer.style.display =
+                    "none";
+
+                return;
+
+            }
+
+
+            const allowedTypes = [
+                "video/mp4",
+                "video/quicktime",
+                "video/webm"
+            ];
+
+
+            if (!allowedTypes.includes(file.type)) {
+
+                errorMessage.textContent =
+                    "Please choose an MP4, MOV, or WebM video.";
+
+                errorMessage.style.display =
+                    "block";
+
+                this.value = "";
+
+                return;
+
+            }
+
+
+            if (file.size > 100 * 1024 * 1024) {
+
+                errorMessage.textContent =
+                    "Video must be smaller than 100 MB.";
+
+                errorMessage.style.display =
+                    "block";
+
+                this.value = "";
+
+                return;
+
+            }
+
+
+            errorMessage.style.display =
+                "none";
+
+
+            const videoURL =
+                URL.createObjectURL(file);
+
+
+            videoPreview.src =
+                videoURL;
+
+            videoPreviewName.textContent =
+                file.name;
+
+            videoPreviewContainer.style.display =
+                "block";
+
+        }
+    );
+
+
+    /*
+        FORM SUBMISSION
+    */
+
+    uploadForm.addEventListener(
+        "submit",
+        async function (event) {
+
+            event.preventDefault();
+
+
+            const isVideo =
+                videoOption.classList.contains("active");
+
+
+            const file =
+                isVideo
+                    ? videoInput.files[0]
+                    : imageInput.files[0];
+
+
+            if (!file) {
+
+                errorMessage.textContent =
+                    isVideo
+                        ? "Please choose a video first."
+                        : "Please choose a photo first.";
+
+                errorMessage.style.display =
+                    "block";
+
+                return;
+
+            }
+
+
+            uploadButton.disabled = true;
+
+            uploadButton.textContent =
+                isVideo
+                    ? "Uploading Video..."
+                    : "Uploading Photo...";
+
+
+            errorMessage.style.display =
+                "none";
+
+
+            /*
+                CREATE FORM DATA
+            */
+
+            const formData =
+                new FormData();
+
+
+            formData.append(
+                "guest_name",
+                document.getElementById("guestName").value
+            );
+
+
+            if (isVideo) {
+
+                formData.append(
+                    "video",
+                    videoInput.files[0]
+                );
+
+            }
+
+            else {
+
+                formData.append(
+                    "image",
+                    imageInput.files[0]
+                );
+
+            }
+
+
+            /*
+                CSRF TOKEN
+            */
+
+            const csrfToken =
+                document.querySelector(
+                    "[name=csrfmiddlewaretoken]"
+                ).value;
+
+
+            formData.append(
+                "csrfmiddlewaretoken",
+                csrfToken
+            );
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        window.location.href,
+                        {
+                            method: "POST",
+                            body: formData
+                        }
+                    );
+
+
+                if (response.ok) {
+
+                    uploadSection.style.display =
+                        "none";
+
+                    successSection.style.display =
+                        "block";
+
+                }
+
+                else {
+
+                    let message =
+                        "Something went wrong. Please try again.";
+
+
+                    try {
+
+                        const data =
+                            await response.json();
+
+                        message =
+                            JSON.stringify(data);
+
+                    }
+
+                    catch (error) {
+
+                    }
+
+
+                    errorMessage.textContent =
+                        message;
+
+                    errorMessage.style.display =
+                        "block";
+
+
+                    uploadButton.disabled =
+                        false;
+
+
+                    uploadButton.textContent =
+                        isVideo
+                            ? "🎥 Upload My Video"
+                            : "❤️ Upload My Photo";
+
+                }
+
+            }
+
+            catch (error) {
+
+                errorMessage.textContent =
+                    "Could not connect to the server. Please try again.";
+
+                errorMessage.style.display =
+                    "block";
+
+
+                uploadButton.disabled =
+                    false;
+
+
+                uploadButton.textContent =
+                    isVideo
+                        ? "🎥 Upload My Video"
+                        : "❤️ Upload My Photo";
+
+            }
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>

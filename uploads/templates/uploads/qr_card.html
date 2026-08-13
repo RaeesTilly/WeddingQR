@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {{ wedding.bride_name }} & {{ wedding.groom_name }}
+        - Wedding QR
+    </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #faf7f2;
+            color: #3b3028;
+            font-family: Georgia, "Times New Roman", serif;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 30px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 600px;
+
+            background: white;
+
+            padding: 55px 40px;
+
+            text-align: center;
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 15px 45px
+                rgba(59, 48, 40, 0.12);
+        }
+
+        .initials {
+            font-size: 18px;
+            letter-spacing: 6px;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            margin: 0;
+
+            font-size: 42px;
+            font-weight: normal;
+        }
+
+        .subtitle {
+            margin-top: 15px;
+
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .divider {
+            width: 70px;
+            height: 1px;
+
+            background: #b9a28f;
+
+            margin: 30px auto;
+        }
+
+        .instruction {
+            font-size: 20px;
+
+            margin-bottom: 25px;
+        }
+
+        .qr {
+            width: 280px;
+            max-width: 80%;
+
+            margin: 10px auto 25px;
+
+            display: block;
+        }
+
+        .scan {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .message {
+            font-size: 15px;
+            line-height: 1.7;
+
+            opacity: 0.75;
+
+            max-width: 420px;
+
+            margin: 0 auto;
+        }
+
+        .buttons {
+            margin-top: 35px;
+        }
+
+        .print-button {
+            border: none;
+
+            background: #3b3028;
+            color: white;
+
+            padding: 14px 25px;
+
+            border-radius: 7px;
+
+            font-size: 15px;
+
+            cursor: pointer;
+        }
+
+        @media print {
+
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .card {
+                box-shadow: none;
+                border-radius: 0;
+            }
+
+            .buttons {
+                display: none;
+            }
+
+        }
+
+        @media (max-width: 500px) {
+
+            body {
+                padding: 15px;
+            }
+
+            .card {
+                padding: 40px 20px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            .qr {
+                width: 240px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="card">
+
+    <div class="initials">
+        {{ wedding.bride_name|first|upper }}
+        &
+        {{ wedding.groom_name|first|upper }}
+    </div>
+
+
+    <h1>
+
+        {{ wedding.bride_name }}
+        &
+        {{ wedding.groom_name }}
+
+    </h1>
+
+
+    <p class="subtitle">
+
+        Help us capture the special moments
+        from our wedding ❤️
+
+    </p>
+
+
+    <div class="divider"></div>
+
+
+    <div class="instruction">
+
+        Scan to share your memories
+
+    </div>
+
+
+    <img
+        class="qr"
+        src="/api/weddings/{{ wedding.slug }}/qr/"
+        alt="Wedding QR Code"
+    >
+
+
+    <div class="scan">
+
+        📸 🎥
+
+    </div>
+
+
+    <div class="message">
+
+        Scan this QR code with your phone
+        to upload your photos and videos
+        to our wedding gallery.
+
+        <br><br>
+
+        Your memories will become part
+        of our special day.
+
+        ❤️
+
+    </div>
+
+
+    <div class="buttons">
+
+        <button
+            class="print-button"
+            onclick="window.print()"
+        >
+            🖨️ Print QR Card
+        </button>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

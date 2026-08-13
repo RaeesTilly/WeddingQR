@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {{ wedding.bride_name }} & {{ wedding.groom_name }}
+        - Wedding Gallery
+    </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Georgia, "Times New Roman", serif;
+            background: #faf7f2;
+            color: #3b3028;
+        }
+
+        .page {
+            min-height: 100vh;
+            padding: 35px 18px 50px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .initials {
+            font-size: 18px;
+            letter-spacing: 5px;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 42px;
+            font-weight: normal;
+            margin: 0;
+        }
+
+        .header p {
+            font-size: 17px;
+            margin-top: 12px;
+            line-height: 1.6;
+        }
+
+        .divider {
+            width: 70px;
+            height: 1px;
+            background: #b9a28f;
+            margin: 25px auto;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 35px;
+            flex-wrap: wrap;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 13px 20px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+
+        .upload-button {
+            background: #3b3028;
+            color: white;
+        }
+
+        .home-button {
+            border: 1px solid #3b3028;
+            color: #3b3028;
+            background: transparent;
+        }
+
+        .photo-count {
+            text-align: center;
+            margin-bottom: 25px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .photo-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(59, 48, 40, 0.08);
+        }
+
+        .photo {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            display: block;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .photo:hover {
+            transform: scale(1.03);
+        }
+
+        .video {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            display: block;
+            background: #000;
+        }
+
+        .photo-info {
+            padding: 12px 14px;
+            text-align: left;
+        }
+
+        .guest-name {
+            font-size: 15px;
+            margin: 0;
+        }
+
+        .uploaded-date {
+            margin: 5px 0 0;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            opacity: 0.6;
+        }
+
+        .media-type {
+            margin-top: 8px;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        .download-button {
+            display: block;
+            margin-top: 12px;
+            padding: 10px;
+            background: #3b3028;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 6px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+
+        .download-button:hover {
+            opacity: 0.9;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 12px;
+        }
+
+        .empty-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .empty h2 {
+            font-weight: normal;
+        }
+
+        .empty p {
+            font-family: Arial, sans-serif;
+            font-size: 15px;
+            opacity: 0.7;
+        }
+
+        /* LIGHTBOX */
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .lightbox img {
+            max-width: 95%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 5px;
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            color: white;
+            font-size: 35px;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+        }
+
+        @media (max-width: 700px) {
+
+            .gallery {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .header h1 {
+                font-size: 34px;
+            }
+
+        }
+
+        @media (max-width: 400px) {
+
+            .gallery {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .page {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="page">
+
+    <div class="container">
+
+
+        <!-- HEADER -->
+
+        <header class="header">
+
+            <div class="initials">
+
+                {{ wedding.bride_name|first|upper }}
+                &
+                {{ wedding.groom_name|first|upper }}
+
+            </div>
+
+            <h1>
+
+                {{ wedding.bride_name }}
+                &
+                {{ wedding.groom_name }}
+
+            </h1>
+
+            <div class="divider"></div>
+
+            <p>
+                Our Wedding Memories ❤️
+            </p>
+
+        </header>
+
+
+        <!-- ACTION BUTTONS -->
+
+        <div class="actions">
+
+            <a
+                href="/api/weddings/{{ wedding.slug }}/upload/"
+                class="button upload-button"
+            >
+                📸 Share a Memory
+            </a>
+
+
+            <a
+                href="/wedding/{{ wedding.slug }}/"
+                class="button home-button"
+            >
+                ← Wedding Home
+            </a>
+
+        </div>
+
+
+        {% if photos %}
+
+
+            <div class="photo-count">
+
+                {{ photos|length }}
+
+                {% if photos|length == 1 %}
+                    memory
+                {% else %}
+                    memories
+                {% endif %}
+
+                shared by our guests ❤️
+
+            </div>
+
+
+            <!-- GALLERY -->
+
+            <div class="gallery">
+
+
+                {% for photo in photos %}
+
+
+                    <div class="photo-card">
+
+
+                        <!-- PHOTO -->
+
+                        {% if photo.image %}
+
+                            <img
+                                src="{{ photo.image.url }}"
+                                alt="Photo shared by {{ photo.guest_name|default:'Anonymous' }}"
+                                class="photo"
+                                onclick="openLightbox(this.src)"
+                            >
+
+                        {% endif %}
+
+
+                        <!-- VIDEO -->
+
+                        {% if photo.video %}
+
+                            <video
+                                class="video"
+                                controls
+                                preload="metadata"
+                            >
+
+                                <source
+                                    src="{{ photo.video.url }}"
+                                    type="video/mp4"
+                                >
+
+                                Your browser does not support video playback.
+
+                            </video>
+
+                        {% endif %}
+
+
+                        <!-- INFORMATION -->
+
+                        <div class="photo-info">
+
+
+                            <p class="guest-name">
+
+                                ❤️
+                                {{ photo.guest_name|default:"Anonymous" }}
+
+                            </p>
+
+
+                            <p class="uploaded-date">
+
+                                {{ photo.uploaded_at|date:"F j, Y · g:i A" }}
+
+                            </p>
+
+
+                            <!-- MEDIA TYPE -->
+
+                            {% if photo.image %}
+
+                                <div class="media-type">
+                                    📸 Photo
+                                </div>
+
+                            {% endif %}
+
+
+                            {% if photo.video %}
+
+                                <div class="media-type">
+                                    🎥 Video
+                                </div>
+
+                            {% endif %}
+
+
+                            <!-- DOWNLOAD PHOTO -->
+
+                            {% if photo.image %}
+
+                                <a
+                                    href="{{ photo.image.url }}"
+                                    download
+                                    class="download-button"
+                                >
+                                    ⬇️ Download Photo
+                                </a>
+
+                            {% endif %}
+
+
+                            <!-- DOWNLOAD VIDEO -->
+
+                            {% if photo.video %}
+
+                                <a
+                                    href="{{ photo.video.url }}"
+                                    download
+                                    class="download-button"
+                                >
+                                    ⬇️ Download Video
+                                </a>
+
+                            {% endif %}
+
+
+                        </div>
+
+
+                    </div>
+
+
+                {% endfor %}
+
+
+            </div>
+
+
+        {% else %}
+
+
+            <!-- EMPTY GALLERY -->
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    📸
+                </div>
+
+                <h2>
+                    No memories yet
+                </h2>
+
+                <p>
+
+                    Be the first person to share
+                    a photo or video from this
+                    special day.
+
+                </p>
+
+                <br>
+
+
+                <a
+                    href="/api/weddings/{{ wedding.slug }}/upload/"
+                    class="button upload-button"
+                >
+                    📸 Share the First Memory
+                </a>
+
+            </div>
+
+
+        {% endif %}
+
+
+    </div>
+
+</div>
+
+
+<!-- LIGHTBOX -->
+
+<div
+    id="lightbox"
+    class="lightbox"
+    onclick="closeLightbox()"
+>
+
+    <span
+        class="close"
+        onclick="closeLightbox()"
+    >
+        ×
+    </span>
+
+
+    <img
+        id="lightboxImage"
+        src=""
+        alt="Wedding photo"
+        onclick="event.stopPropagation()"
+    >
+
+</div>
+
+
+<script>
+
+    function openLightbox(imageUrl) {
+
+        const lightbox =
+            document.getElementById("lightbox");
+
+        const image =
+            document.getElementById("lightboxImage");
+
+        image.src = imageUrl;
+
+        lightbox.style.display = "flex";
+
+    }
+
+
+    function closeLightbox() {
+
+        const lightbox =
+            document.getElementById("lightbox");
+
+        lightbox.style.display = "none";
+
+    }
+
+
+    document.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (event.key === "Escape") {
+
+                closeLightbox();
+
+            }
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>

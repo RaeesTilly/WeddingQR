@@ -95,8 +95,6 @@
             border-color: #8d7563;
         }
 
-        /* MEMORY TYPE */
-
         .memory-options {
             display: flex;
             gap: 10px;
@@ -159,8 +157,6 @@
             text-align: center;
         }
 
-        /* PREVIEW */
-
         .preview-container {
             display: none;
             margin-top: 20px;
@@ -181,8 +177,6 @@
             opacity: 0.7;
             word-break: break-word;
         }
-
-        /* BUTTON */
 
         .upload-button {
             width: 100%;
@@ -213,8 +207,6 @@
             text-decoration: none;
             font-size: 14px;
         }
-
-        /* SUCCESS */
 
         .success {
             display: none;
@@ -259,8 +251,6 @@
             border: 1px solid #3b3028;
             color: #3b3028;
         }
-
-        /* ERROR */
 
         .error {
             display: none;
@@ -310,17 +300,25 @@
         <div id="uploadSection">
 
             <div class="initials">
-                T & M
+
+                {{ wedding.bride_name|first|upper }}
+                &
+                {{ wedding.groom_name|first|upper }}
+
             </div>
+
 
             <h1>
                 Share a Memory ❤️
             </h1>
 
+
             <p class="subtitle">
 
-                Help {{ wedding.bride_name }}
-                and {{ wedding.groom_name }}
+                Help
+                {{ wedding.bride_name }}
+                and
+                {{ wedding.groom_name }}
                 capture the special moments
                 from their wedding.
 
@@ -366,7 +364,9 @@
                         What would you like to share?
                     </label>
 
+
                     <div class="memory-options">
+
 
                         <label
                             class="memory-option active"
@@ -400,10 +400,11 @@
 
                         </label>
 
+
                     </div>
 
 
-                    <!-- PHOTO -->
+                    <!-- PHOTO UPLOAD -->
 
                     <div id="photoUpload">
 
@@ -418,6 +419,7 @@
 
                         </label>
 
+
                         <input
                             type="file"
                             id="imageInput"
@@ -425,14 +427,18 @@
                             accept="image/*"
                         >
 
+
                         <div class="upload-info">
-                            Maximum photo size: 20 MB
+
+                            Maximum photo size:
+                            20 MB
+
                         </div>
 
                     </div>
 
 
-                    <!-- VIDEO -->
+                    <!-- VIDEO UPLOAD -->
 
                     <div
                         id="videoUpload"
@@ -450,6 +456,7 @@
 
                         </label>
 
+
                         <input
                             type="file"
                             id="videoInput"
@@ -457,14 +464,18 @@
                             accept="video/mp4,video/quicktime,video/webm"
                         >
 
+
                         <div class="upload-info">
-                            Maximum video size: 100 MB
+
+                            Maximum video size:
+                            100 MB
+
                         </div>
 
                     </div>
 
 
-                    <!-- PHOTO PREVIEW -->
+                    <!-- IMAGE PREVIEW -->
 
                     <div
                         id="imagePreviewContainer"
@@ -475,6 +486,7 @@
                             id="imagePreview"
                             alt="Selected photo preview"
                         >
+
 
                         <div
                             id="imagePreviewName"
@@ -496,6 +508,7 @@
                             controls
                             playsinline
                         ></video>
+
 
                         <div
                             id="videoPreviewName"
@@ -529,12 +542,17 @@
             </form>
 
 
+            <!-- BACK TO WEDDING -->
+
             <a
                 class="back-link"
-                href="/wedding/{{ wedding.slug }}/"
+                href="/wedding/weddings/{{ wedding.slug }}/"
             >
+
                 ← Back to Wedding
+
             </a>
+
 
         </div>
 
@@ -552,15 +570,18 @@
 
 
             <h2>
-                Congratulations!
+                Thank You!
             </h2>
 
 
             <p>
 
                 Your memory has been successfully
-                added to {{ wedding.bride_name }}
-                & {{ wedding.groom_name }}'s
+                added to
+
+                {{ wedding.bride_name }}
+                &
+                {{ wedding.groom_name }}'s
                 wedding memories.
 
                 ❤️
@@ -570,20 +591,30 @@
 
             <div class="success-buttons">
 
+
+                <!-- GALLERY -->
+
                 <a
                     class="success-button gallery-button"
-                    href="/api/weddings/{{ wedding.slug }}/gallery/"
+                    href="/wedding/weddings/{{ wedding.slug }}/gallery/"
                 >
+
                     🖼️ View Wedding Gallery
+
                 </a>
 
+
+                <!-- BACK TO WEDDING -->
 
                 <a
                     class="success-button home-button"
-                    href="/wedding/{{ wedding.slug }}/"
+                    href="/wedding/weddings/{{ wedding.slug }}/"
                 >
+
                     ← Back to Wedding
+
                 </a>
+
 
             </div>
 
@@ -597,65 +628,84 @@
 
 <script>
 
-    /*
-        ELEMENTS
-    */
+
+    /* --------------------------------------------------
+       ELEMENTS
+    -------------------------------------------------- */
+
 
     const photoOption =
         document.getElementById("photoOption");
 
+
     const videoOption =
         document.getElementById("videoOption");
+
 
     const photoUpload =
         document.getElementById("photoUpload");
 
+
     const videoUpload =
         document.getElementById("videoUpload");
+
 
     const imageInput =
         document.getElementById("imageInput");
 
+
     const videoInput =
         document.getElementById("videoInput");
+
 
     const imagePreview =
         document.getElementById("imagePreview");
 
+
     const videoPreview =
         document.getElementById("videoPreview");
+
 
     const imagePreviewContainer =
         document.getElementById("imagePreviewContainer");
 
+
     const videoPreviewContainer =
         document.getElementById("videoPreviewContainer");
+
 
     const imagePreviewName =
         document.getElementById("imagePreviewName");
 
+
     const videoPreviewName =
         document.getElementById("videoPreviewName");
+
 
     const uploadForm =
         document.getElementById("uploadForm");
 
+
     const uploadButton =
         document.getElementById("uploadButton");
+
 
     const errorMessage =
         document.getElementById("errorMessage");
 
+
     const uploadSection =
         document.getElementById("uploadSection");
+
 
     const successSection =
         document.getElementById("successSection");
 
 
-    /*
-        MEMORY TYPE SWITCHING
-    */
+    /* --------------------------------------------------
+       PHOTO / VIDEO SWITCH
+    -------------------------------------------------- */
+
 
     photoOption.addEventListener(
         "click",
@@ -673,14 +723,17 @@
 
             videoInput.value = "";
 
-            imagePreviewContainer.style.display = "none";
+            imagePreviewContainer.style.display =
+                "none";
 
-            videoPreviewContainer.style.display = "none";
+            videoPreviewContainer.style.display =
+                "none";
 
             uploadButton.textContent =
                 "❤️ Upload My Photo";
 
-            errorMessage.style.display = "none";
+            errorMessage.style.display =
+                "none";
 
         }
     );
@@ -702,28 +755,33 @@
 
             videoInput.value = "";
 
-            imagePreviewContainer.style.display = "none";
+            imagePreviewContainer.style.display =
+                "none";
 
-            videoPreviewContainer.style.display = "none";
+            videoPreviewContainer.style.display =
+                "none";
 
             uploadButton.textContent =
                 "🎥 Upload My Video";
 
-            errorMessage.style.display = "none";
+            errorMessage.style.display =
+                "none";
 
         }
     );
 
 
-    /*
-        PHOTO PREVIEW
-    */
+    /* --------------------------------------------------
+       PHOTO PREVIEW
+    -------------------------------------------------- */
+
 
     imageInput.addEventListener(
         "change",
         function () {
 
             const file = this.files[0];
+
 
             if (!file) {
 
@@ -794,15 +852,17 @@
     );
 
 
-    /*
-        VIDEO PREVIEW
-    */
+    /* --------------------------------------------------
+       VIDEO PREVIEW
+    -------------------------------------------------- */
+
 
     videoInput.addEventListener(
         "change",
         function () {
 
             const file = this.files[0];
+
 
             if (!file) {
 
@@ -815,9 +875,11 @@
 
 
             const allowedTypes = [
+
                 "video/mp4",
                 "video/quicktime",
                 "video/webm"
+
             ];
 
 
@@ -862,8 +924,10 @@
             videoPreview.src =
                 videoURL;
 
+
             videoPreviewName.textContent =
                 file.name;
+
 
             videoPreviewContainer.style.display =
                 "block";
@@ -872,9 +936,10 @@
     );
 
 
-    /*
-        FORM SUBMISSION
-    */
+    /* --------------------------------------------------
+       FORM SUBMISSION
+    -------------------------------------------------- */
+
 
     uploadForm.addEventListener(
         "submit",
@@ -908,7 +973,9 @@
             }
 
 
-            uploadButton.disabled = true;
+            uploadButton.disabled =
+                true;
+
 
             uploadButton.textContent =
                 isVideo
@@ -919,10 +986,6 @@
             errorMessage.style.display =
                 "none";
 
-
-            /*
-                CREATE FORM DATA
-            */
 
             const formData =
                 new FormData();
@@ -953,10 +1016,6 @@
             }
 
 
-            /*
-                CSRF TOKEN
-            */
-
             const csrfToken =
                 document.querySelector(
                     "[name=csrfmiddlewaretoken]"
@@ -986,6 +1045,7 @@
                     uploadSection.style.display =
                         "none";
 
+
                     successSection.style.display =
                         "block";
 
@@ -1003,17 +1063,22 @@
                             await response.json();
 
                         message =
+                            data.detail ||
                             JSON.stringify(data);
 
                     }
 
                     catch (error) {
 
+                        message =
+                            "Upload failed. Please try again.";
+
                     }
 
 
                     errorMessage.textContent =
                         message;
+
 
                     errorMessage.style.display =
                         "block";

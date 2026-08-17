@@ -121,7 +121,7 @@ def wedding_qr(request, slug):
     wedding = get_object_or_404(Wedding, slug=slug)
 
     url = request.build_absolute_uri(
-        f"/weddings/{wedding.slug}/"
+        f"/wedding/weddings/{wedding.slug}/"
     )
 
     qr = qrcode.make(url)
@@ -135,6 +135,7 @@ def wedding_qr(request, slug):
         buffer.getvalue(),
         content_type="image/png"
     )
+
 
 def wedding_qr_card(request, slug):
     wedding = get_object_or_404(Wedding, slug=slug)

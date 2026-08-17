@@ -24,12 +24,9 @@ SECRET_KEY = os.getenv(
 DEBUG = os.getenv("DEBUG", "True").lower() == "true"
 
 ALLOWED_HOSTS = [
-    host.strip()
-    for host in os.getenv(
-        "ALLOWED_HOSTS",
-        "localhost,127.0.0.1,10.1.0.10"
-    ).split(",")
-    if host.strip()
+    "weddingqr-5vtx.onrender.com",
+    "localhost",
+    "127.0.0.1",
 ]
 
 

@@ -1,13 +1,21 @@
 from django.contrib import admin
 from django.urls import path, include
+from django.shortcuts import redirect
 from django.conf import settings
 from django.conf.urls.static import static
 
+
+def home(request):
+    return redirect("/wedding/weddings/Tasmiyah-Mohammed/")
+
+
 urlpatterns = [
-    path("", include("uploads.public_urls")),
+    path("", home, name="home"),
     path("admin/", admin.site.urls),
     path("api/", include("uploads.urls")),
+    path("wedding/", include("uploads.public_urls")),
 ]
+
 
 if settings.DEBUG:
     urlpatterns += static(

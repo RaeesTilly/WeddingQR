@@ -212,10 +212,10 @@
 
 
     <img
-        class="qr"
-        src="/api/weddings/{{ wedding.slug }}/qr/"
-        alt="Wedding QR Code"
-    >
+    class="qr"
+    src="{% url 'wedding-qr' wedding.slug %}"
+    alt="Wedding QR Code"
+>
 
 
     <div class="scan">

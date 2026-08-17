@@ -11,14 +11,20 @@ def home(request):
 
 urlpatterns = [
     path("", home, name="home"),
+
     path("admin/", admin.site.urls),
+
+    # API URLs
     path("api/", include("uploads.urls")),
+
+    # Public wedding website
     path("wedding/", include("uploads.public_urls")),
 ]
 
 
-if settings.DEBUG:
-    urlpatterns += static(
-        settings.MEDIA_URL,
-        document_root=settings.MEDIA_ROOT
-    )
+# Serve uploaded media files
+# This allows images/videos to work on Render as well.
+urlpatterns += static(
+    settings.MEDIA_URL,
+    document_root=settings.MEDIA_ROOT
+)

@@ -1,40 +1,30 @@
-from django.urls import path
-from .views import (
-    photo_upload_page,
-    wedding_gallery,
-    wedding_home,
-    wedding_qr,
-    wedding_qr_card,
-)
+from django.contrib import admin
+from django.urls import path, include
+from django.shortcuts import redirect
+from django.conf import settings
+from django.conf.urls.static import static
+
+
+def home(request):
+    return redirect("/wedding/weddings/Tasmiyah-Mohammed/")
+
 
 urlpatterns = [
-    path(
-        "weddings/<slug:slug>/",
-        wedding_home,
-        name="wedding-home",
-    ),
+    path("", home, name="home"),
 
-    path(
-        "weddings/<slug:slug>/upload/",
-        photo_upload_page,
-        name="photo-upload-page",
-    ),
+    path("admin/", admin.site.urls),
 
-    path(
-        "weddings/<slug:slug>/gallery/",
-        wedding_gallery,
-        name="wedding-gallery",
-    ),
+    # API URLs
+    path("api/", include("uploads.urls")),
 
-    path(
-        "weddings/<slug:slug>/qr/",
-        wedding_qr,
-        name="wedding-qr",
-    ),
-
-    path(
-        "weddings/<slug:slug>/qr-card/",
-        wedding_qr_card,
-        name="wedding-qr-card",
-    ),
+    # Public wedding website
+    path("wedding/", include("uploads.public_urls")),
 ]
+
+
+# Serve uploaded media files
+# This allows images/videos to work on Render as well.
+urlpatterns += static(
+    settings.MEDIA_URL,
+    document_root=settings.MEDIA_ROOT
+)

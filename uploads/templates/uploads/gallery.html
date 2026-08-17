@@ -94,7 +94,7 @@
         .home-button {
             border: 1px solid #3b3028;
             color: #3b3028;
-            background: transparent;
+            background: white;
         }
 
         .photo-count {
@@ -115,7 +115,8 @@
             background: white;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 5px 20px rgba(59, 48, 40, 0.08);
+            box-shadow:
+                0 5px 20px rgba(59, 48, 40, 0.08);
         }
 
         .photo {
@@ -283,6 +284,7 @@
 
             </div>
 
+
             <h1>
 
                 {{ wedding.bride_name }}
@@ -291,7 +293,9 @@
 
             </h1>
 
+
             <div class="divider"></div>
+
 
             <p>
                 Our Wedding Memories ❤️
@@ -304,16 +308,20 @@
 
         <div class="actions">
 
+            <!-- CORRECT PUBLIC UPLOAD URL -->
+
             <a
-                href="/api/weddings/{{ wedding.slug }}/upload/"
+                href="/wedding/weddings/{{ wedding.slug }}/upload/"
                 class="button upload-button"
             >
                 📸 Share a Memory
             </a>
 
 
+            <!-- CORRECT PUBLIC HOME URL -->
+
             <a
-                href="/wedding/{{ wedding.slug }}/"
+                href="/wedding/weddings/{{ wedding.slug }}/"
                 class="button home-button"
             >
                 ← Wedding Home
@@ -339,8 +347,6 @@
 
             </div>
 
-
-            <!-- GALLERY -->
 
             <div class="gallery">
 
@@ -373,11 +379,11 @@
                                 class="video"
                                 controls
                                 preload="metadata"
+                                playsinline
                             >
 
                                 <source
                                     src="{{ photo.video.url }}"
-                                    type="video/mp4"
                                 >
 
                                 Your browser does not support video playback.
@@ -406,8 +412,6 @@
 
                             </p>
 
-
-                            <!-- MEDIA TYPE -->
 
                             {% if photo.image %}
 
@@ -472,17 +476,17 @@
         {% else %}
 
 
-            <!-- EMPTY GALLERY -->
-
             <div class="empty">
 
                 <div class="empty-icon">
                     📸
                 </div>
 
+
                 <h2>
                     No memories yet
                 </h2>
+
 
                 <p>
 
@@ -492,11 +496,14 @@
 
                 </p>
 
+
                 <br>
 
 
+                <!-- CORRECT PUBLIC UPLOAD URL -->
+
                 <a
-                    href="/api/weddings/{{ wedding.slug }}/upload/"
+                    href="/wedding/weddings/{{ wedding.slug }}/upload/"
                     class="button upload-button"
                 >
                     📸 Share the First Memory
